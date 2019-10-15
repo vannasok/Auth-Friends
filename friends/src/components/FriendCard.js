@@ -13,9 +13,7 @@ const FriendCard = ({ friend, updateFriendState, removeFriend }) => {
             <Card.Content>
                <Card.Header>{friend.name}</Card.Header>
                <Card.Meta>{friend.email}</Card.Meta>
-               <Card.Description>
-                  {friend.name} is {friend.age} years old.
-               </Card.Description>
+               <Card.Description>Age: {friend.age}</Card.Description>
             </Card.Content>
 
             <Card.Content extra>
@@ -23,14 +21,14 @@ const FriendCard = ({ friend, updateFriendState, removeFriend }) => {
                   as={Link}
                   to='/update-friend'
                   onClick={() => updateFriendState(friend)}
-                  color='blue'>
+                  color='#ccc'>
                   Update
                </Button>
                <Button
                   className='ui right floated'
                   onClick={() => removeFriend(friend)}
                   color='red'>
-                  Unfriend
+                  Remove
                </Button>
             </Card.Content>
          </Card>

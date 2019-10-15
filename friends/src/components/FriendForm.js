@@ -25,7 +25,7 @@ function JSXForm({ values, handleSubmit }) {
             type='text'
             name='age'
             label='Age:'
-            placeholder='Age'
+            placeholder='enter age'
             component={SemanticFormikField}
          />
 

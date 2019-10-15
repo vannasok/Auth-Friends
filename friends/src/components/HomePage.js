@@ -1,68 +1,28 @@
-import React from 'react';
-import { Field, withFormik } from 'formik';
-import * as yup from 'yup';
-import axios from 'axios';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
+import { connect, useSelector } from 'react-redux';
 
-import { loggedStatus } from '../actions';
+import FriendCard from './FriendCard';
+import { getFriendsList } from '../actions';
 
-import { Form, Button } from 'semantic-ui-react';
-import { SemanticFormikField } from '../utils/SemanticFormikField';
+import { Grid } from 'semantic-ui-react';
 
-function JSXForm({ handleSubmit }) {
+const HomePage = ({ getFriendsList }) => {
+   const friendsList = useSelector(state => state.friendsList);
+
+   useEffect(() => {
+      getFriendsList();
+   }, []);
+
    return (
-      <Form onSubmit={handleSubmit}>
-         <Field
-            type='text'
-            name='username'
-            placeholder='Username'
-            label='Username:'
-            component={SemanticFormikField}
-         />
-
-         <Field
-            type='password'
-            name='password'
-            placeholder='Password'
-            label='Password:'
-            component={SemanticFormikField}
-         />
-
-         <Button type='submit'>Log In</Button>
-      </Form>
+      <Grid columns={3} container fluid='true'>
+         {friendsList.map(friend => (
+            <FriendCard key={friend.id} friend={friend} />
+         ))}
+      </Grid>
    );
-}
-
-const LoginForm = withFormik({
-   mapPropsToValues({ username, password }) {
-      return {
-         username: username || '',
-         password: password || ''
-      };
-   },
-
-   validationSchema: yup.object().shape({
-      username: yup.string().required('*Username is required'),
-      password: yup.string().required('*Password is required')
-   }),
-
-   handleSubmit(values, { props, resetForm, setErrors, setSubmitting }) {
-      axios
-         .post('http://localhost:5000/api/login', values)
-         .then(res => {
-            localStorage.setItem('token', res.data.payload);
-            props.loggedStatus();
-            resetForm();
-            setSubmitting(false);
-            props.history.push('/');
-         })
-         .catch(err => {
-            setSubmitting(false);
-         });
-   }
-})(JSXForm);
+};
 
 export default connect(
    null,
-   { loggedStatus }
-)(LoginForm);
+   { getFriendsList }
+)(HomePage);

@@ -20,27 +20,11 @@
 .App-link {
    color: #09d3ac;
 }
-.showcase {
+.container {
+   margin: 0 auto;
    display: flex;
-   flex-wrap: wrap;
-}
-.name-card {
-   background: #09d3ac;
-   margin: 2%;
-   width: 35%;
-}
-input {
-   padding: 10px 20px;
-   border: 1px solid #09d3ac;
-   margin: 2%;
-   border-radius: 50px;
-}
-button {
-   font-size: 1rem;
-   text-decoration: none;
-   background: #09d3ac;
-   padding: 5px 5px;
-   border-radius: 50px;
-   color: white;
-   margin: 1%;
+   flex-direction: column;
+   justify-content: center;
+   max-width: 1000px;
+   width: 100%;
 }
