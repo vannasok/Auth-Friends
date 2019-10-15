@@ -15,7 +15,7 @@ function JSXForm({ handleSubmit }) {
          <Field
             type='text'
             name='username'
-            placeholder='Username'
+            placeholder='Enter username'
             label='Username:'
             component={SemanticFormikField}
          />
@@ -23,12 +23,16 @@ function JSXForm({ handleSubmit }) {
          <Field
             type='password'
             name='password'
-            placeholder='Password'
+            placeholder='Enter password'
             label='Password:'
             component={SemanticFormikField}
          />
 
          <Button type='submit'>Log In</Button>
+         <p>
+            username: admin <br />
+            passowrd: admin
+         </p>
       </Form>
    );
 }
