@@ -1,50 +1,84 @@
-import axios from 'axios';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
-export const FETCH_FRIENDS_START = 'FETCH_FRIENDS_START';
-export const FETCH_FRIENDS_SUCCESS = 'FETCH_FRIENDS_SUCCESS';
-export const FETCH_FRIENDS_FAILURE = 'FETCH_FRIENDS_FAILURE';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FETCHING = 'LOGIN_FETCHING';
-export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const UPDATE_LOGIN_STATUS = 'UPDATE_LOGIN_STATUS';
+export const UPDATE_FRIEND_STATE = 'UPDATE_FRIEND_STATE';
+export const GET_FRIENDS_START = 'GET_FRIENDS_START';
+export const GET_FRIENDS_SUCCESS = 'GET_FRIENDS_SUCCESS';
+export const GET_FRIENDS_FAIL = 'GET_FRIENDS_FAIL';
+export const POST_FRIENDS_START = 'POST_FRIENDS_START';
+export const POST_FRIENDS_SUCCESS = 'POST_FRIENDS_SUCCESS';
+export const POST_FRIENDS_FAIL = 'POST_FRIENDS_FAIL';
+export const PUT_FRIENDS_START = 'PUT_FRIENDS_START';
+export const PUT_FRIENDS_SUCCESS = 'PUT_FRIENDS_SUCCESS';
+export const PUT_FRIENDS_FAIL = 'PUT_FRIENDS_FAIL';
+export const DELETE_FRIENDS_START = 'DELETE_FRIENDS_START';
+export const DELETE_FRIENDS_SUCCESS = 'DELETE_FRIENDS_SUCCESS';
+export const DELETE_FRIENDS_FAIL = 'DELETE_FRIENDS_FAIL';
 
-export const loginSuccess = props => dispatch => {
-   dispatch({ type: LOGIN_FETCHING });
-   return axios
-      .get('http://localhost:5000/api/login', props)
-      .then(res => {
-         console.log('res :', res);
-         localStorage.setItem('token', res.data.payload);
-         dispatch({
-            type: LOGIN_SUCCESS,
-            payload: res.data.payload
-         });
-      }) //then
-      .catch(err => {
-         dispatch({
-            type: LOGIN_FAILURE,
-            payload: err
-         });
-      }); //catch
+export const loggedStatus = () => {
+   return dispatch => {
+      dispatch({ type: UPDATE_LOGIN_STATUS });
+   };
 };
 
-export const getFriend = () => dispatch => {
-   dispatch({ type: FETCH_FRIENDS_START });
+export const updateFriendState = friend => {
+   return dispatch => {
+      dispatch({ type: UPDATE_FRIEND_STATE, payload: friend });
+   };
+};
 
-   axios
-      .get(`http://localhost:5000/api/friends`, {
-         headers: { authorization: localStorage.getItem('token') }
-      })
-      .then(res => {
-         console.log(res);
-         dispatch({
-            type: FETCH_FRIENDS_SUCCESS,
-            payload: res.data
-         });
-      }) //then
-      .catch(err => {
-         dispatch({
-            type: FETCH_FRIENDS_FAILURE,
-            payload: err
-         });
-      }); //catch
+export const getFriendsList = () => {
+   return dispatch => {
+      dispatch({ type: GET_FRIENDS_START });
+      axiosWithAuth()
+         .get(`http://localhost:5000/api/friends`)
+         .then(res =>
+            dispatch({ type: GET_FRIENDS_SUCCESS, payload: res.data })
+         )
+         .catch(err =>
+            dispatch({ type: GET_FRIENDS_FAIL, payload: err.response })
+         );
+   };
+};
+
+export const addNewFriend = newFriend => {
+   return dispatch => {
+      dispatch({ type: POST_FRIENDS_START });
+      axiosWithAuth()
+         .post(`http://localhost:5000/api/friends`, newFriend)
+         .then(res =>
+            dispatch({ type: POST_FRIENDS_SUCCESS, payload: res.data })
+         )
+         .catch(err =>
+            dispatch({ type: POST_FRIENDS_FAIL, payload: err.response })
+         );
+   };
+};
+
+export const editFriend = editAmigo => {
+   return dispatch => {
+      dispatch({ type: PUT_FRIENDS_START });
+      axiosWithAuth()
+         .put(`http://localhost:5000/api/friends/${editAmigo.id}`, editAmigo)
+         .then(res =>
+            dispatch({ type: PUT_FRIENDS_SUCCESS, payload: res.data })
+         )
+         .catch(err =>
+            dispatch({ type: PUT_FRIENDS_FAIL, payload: err.response })
+         );
+   };
+};
+
+export const removeFriend = byeFriend => {
+   return dispatch => {
+      dispatch({ type: DELETE_FRIENDS_START });
+      axiosWithAuth()
+         .delete(`http://localhost:5000/api/friends/${byeFriend.id}`)
+         .then(res =>
+            dispatch({ type: DELETE_FRIENDS_SUCCESS, payload: res.data })
+         )
+         .catch(err =>
+            dispatch({ type: DELETE_FRIENDS_FAIL, payload: err.response })
+         );
+   };
 };
