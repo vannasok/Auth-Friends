@@ -6,23 +6,20 @@ import { getFriendsList } from '../actions';
 
 import { Grid } from 'semantic-ui-react';
 
-const HomePage = ({ getFriendsList }) => {
-   const friendsList = useSelector(state => state.friendsList);
+const HomePage = ({}) => {
+	const friendsList = useSelector(state => state.friendsList);
 
-   useEffect(() => {
-      getFriendsList();
-   }, []);
+	useEffect(() => {
+		getFriendsList();
+	}, []);
 
-   return (
-      <Grid columns={3} container fluid='true'>
-         {friendsList.map(friend => (
-            <FriendCard key={friend.id} friend={friend} />
-         ))}
-      </Grid>
-   );
+	return (
+		<Grid columns={3} container fluid='true'>
+			{friendsList.map(friend => (
+				<FriendCard key={friend.id} friend={friend} />
+			))}
+		</Grid>
+	);
 };
 
-export default connect(
-   null,
-   { getFriendsList }
-)(HomePage);
+export default connect(null, { getFriendsList })(HomePage);
